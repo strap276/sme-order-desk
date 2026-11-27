@@ -54,6 +54,34 @@ export type Order = {
   created_at: string
 }
 
+/**
+ * Order row with the customer name joined in (PostgREST `customers(name)`).
+ * Declared explicitly because many-to-one join cardinality cannot be inferred
+ * without generated database types.
+ */
+export type OrderListRow = {
+  id: string
+  order_code: string
+  status: string
+  payment_status: string
+  channel?: string
+  total_fcfa: number
+  balance_fcfa: number
+  created_at: string
+  customers: { name: string } | null
+}
+
+/** Full order row plus its joined customer, as loaded on the order detail page. */
+export type OrderDetail = Order & {
+  customers: {
+    name: string
+    phone: string | null
+    momo_provider: string | null
+    momo_number: string | null
+    zone: string | null
+  } | null
+}
+
 export type OrderItem = {
   id: string
   order_id: string

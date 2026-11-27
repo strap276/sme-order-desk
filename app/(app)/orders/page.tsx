@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { fcfa, shortDate, ORDER_STATUSES, ORDER_STATUS_LABELS } from '@/lib/format'
 import { StatusBadge, PayBadge } from '@/components/StatusBadge'
+import type { OrderListRow } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,8 +18,8 @@ export default async function OrdersPage({ searchParams }: { searchParams: { sta
     .limit(100)
   if (status) query = query.eq('status', status)
 
-  const { data } = await query
-  const orders = data ?? []
+  const { data } = await query.overrideTypes<OrderListRow[], { merge: false }>()
+  const orders: OrderListRow[] = data ?? []
 
   return (
     <>

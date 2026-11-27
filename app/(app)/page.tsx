@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { fcfa, shortDate } from '@/lib/format'
 import { StatusBadge, PayBadge } from '@/components/StatusBadge'
 import { importDemoData } from '@/actions/orders'
+import type { OrderListRow } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -20,7 +21,8 @@ export default async function DashboardPage() {
     .select('id, order_code, status, payment_status, total_fcfa, balance_fcfa, created_at, customers(name)')
     .order('created_at', { ascending: false })
     .limit(100)
-  const orders = ordersData ?? []
+    .overrideTypes<OrderListRow[], { merge: false }>()
+  const orders: OrderListRow[] = ordersData ?? []
 
   const active = orders.filter((o) => !['delivered', 'cancelled', 'returned'].includes(o.status))
   const unpaid = orders.filter((o) => o.payment_status !== 'paid' && o.status !== 'cancelled')
