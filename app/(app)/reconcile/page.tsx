@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import ReconcileForm from '@/components/ReconcileForm'
+import type { OrderListRow } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,6 +13,7 @@ export default async function ReconcilePage() {
     .neq('status', 'cancelled')
     .order('created_at', { ascending: false })
     .limit(50)
+    .overrideTypes<OrderListRow[], { merge: false }>()
 
   return (
     <>

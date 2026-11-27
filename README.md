@@ -39,6 +39,9 @@ a running balance, a Mobile Money payment record and a ready-to-send confirmatio
   `pending`/`confirmed`/`failed`/`reversed` status.
 - **Order totals that can't drift.** Postgres triggers recompute subtotal, total, amount paid,
   balance and payment status whenever items or payments change.
+- **Order detail & status workflow.** Every order opens on its own page — line items, running
+  totals/balance, the full status flow (nouvelle → confirmée → … → livrée), add/confirm/fail
+  payments, and the paste-ready WhatsApp confirmation message.
 - **Credit ledger.** A per-customer running balance (`debit` on credit sales, `credit` on repayments).
 - **Copy-to-WhatsApp confirmation.** One tap produces the confirmation message with totals and
   your MoMo numbers.
@@ -50,9 +53,15 @@ a running balance, a Mobile Money payment record and a ready-to-send confirmatio
 
 ## Stack
 
-- **Next.js 14 (App Router)** — server components + server actions, TypeScript.
-- **Supabase** — Postgres, Row Level Security, email/password auth.
+- **Next.js 14.2 (App Router)** — server components + server actions, TypeScript.
+- **Supabase** — Postgres, Row Level Security, email/password auth (`@supabase/ssr`, `@supabase/supabase-js`).
 - Plain CSS (mobile-first), zero UI dependencies.
+
+### Requirements
+
+- **Node.js 22 LTS** recommended. Next.js 14 needs ≥18.17; current `@supabase/supabase-js`
+  prints a deprecation notice on Node 20 and targets Node ≥22.
+- A Supabase project — the free tier is enough.
 
 ## Data model
 

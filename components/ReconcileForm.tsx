@@ -4,18 +4,9 @@ import { useState } from 'react'
 import { parseMomoSms, type ParsedMomoSms } from '@/lib/whatsapp/parse'
 import { fcfa, PROVIDER_LABELS } from '@/lib/format'
 import { reconcilePayment } from '@/actions/payments'
+import type { OrderListRow } from '@/lib/types'
 
-type UnpaidOrder = {
-  id: string
-  order_code: string
-  total_fcfa: number
-  balance_fcfa: number
-  payment_status: string
-  created_at: string
-  customers?: { name: string } | null
-}
-
-export default function ReconcileForm({ orders }: { orders: UnpaidOrder[] }) {
+export default function ReconcileForm({ orders }: { orders: OrderListRow[] }) {
   const [sms, setSms] = useState('')
   const [parsed, setParsed] = useState<ParsedMomoSms | null>(null)
   const [orderId, setOrderId] = useState('')
